@@ -1,0 +1,112 @@
+<html>
+<head>
+<title>吊起APP</title>
+<meta name="apple-itunes-app" content="app-id=1340780247"/> 
+<style>
+#safariBtn{
+	width: 200px;
+	height: 80px;
+	margin-left: 100px;
+	margin-top: 100px;
+	background-color: #877769;
+}
+</style>
+
+</head>
+<body>
+	<!-- <a href="weixin://" class="btn-download">立即打开</a>
+	 -->
+	 <button class='safariBtn' id='safariBtn'>点击吊起原生页面</button>
+<script>
+
+//吊起原生的页面
+function callAPP () {
+	var safariBtn = document.getElementById('safariBtn');
+	safariBtn.onclick = function(){
+		var ua = navigator.userAgent.toLowerCase();
+		console.log(ua+"打印");
+		var schemeIOS = getUrlParam('schemeIOS');
+        var schemeAdr = getUrlParam('schemeAdr');
+        var config = {
+                ///*scheme:必须*/
+                scheme_IOS: schemeIOS === null ? "gomeshop://gorder.m.gome.com.cn?params={'type':'1','controll':'TestViewController','params':{'type':'1','entity':{'UserEntity_userInfo':{'birthday':'1988-09-09','name':'hahaha'}}}}" : schemeIOS,
+                scheme_Adr: schemeAdr === null ? "gomeshop://gorder.m.gome.com.cn/openApp" : schemeAdr,
+            };
+          var scheme = ua.indexOf('os') > 0 ? config.scheme_IOS : config.scheme_Adr;
+          console.log('****'+scheme+"scheme的值");
+          OpenAppBySchema(scheme);
+	};
+
+		var ua = navigator.userAgent.toLowerCase();
+		console.log(ua+"打印");
+		var schemeIOS = getUrlParam('schemeIOS');
+        var schemeAdr = getUrlParam('schemeAdr');
+        var config = {
+                ///*scheme:必须  */
+               // type 类型区分要跳转的页面 
+                scheme_IOS: schemeIOS === null ? "gomeshop://gorder.m.gome.com.cn/productDetail?params={'type':'1','controll':'GMProductDetailVC','params':{'type':'1','storeCode':'','areaCode':'11010000','mid':'30975','stid':'A00T','activityId':'6740','productId':'9140028922','skuId':'1130030597'}}" : schemeIOS,
+                scheme_Adr: schemeAdr === null ? "gomeshop://gorder.m.gome.com.cn/openApp" : schemeAdr,
+            };
+          var scheme = ua.indexOf('os') > 0 ? config.scheme_IOS : config.scheme_Adr;
+          OpenAppBySchema(scheme);
+}
+
+ function getUrlParam(name) {
+        //构造一个含有目标参数的正则表达式对象
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        //匹配目标参数
+        var r = window.location.search.substr(1).match(reg);
+        console.log("参数链接"+r);
+        //返回参数值
+        if (r != null)
+            return unescape(decodeURI(r[2]));   //scheme url作为参数需要先编码，所以这里要先decodeURI解码，然后再unescape解码
+        return null;
+    }
+
+    function OpenAppBySchema(scheme) {
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.indexOf('safari') > -1 && (ua.indexOf('os 8') == -1
+            || ua.indexOf('os 7') == -1
+            || ua.indexOf('os 6') == -1
+            || ua.indexOf('os 5') == -1)) {
+            var schemeLinkOpen = document.getElementById('schemeLinkOpen');
+            if (!schemeLinkOpen) {
+                schemeLinkOpen = document.createElement('a');
+                schemeLinkOpen.id = 'schemeLinkOpen';
+                schemeLinkOpen.style.display = 'none';
+                document.body.appendChild(schemeLinkOpen);
+            }
+            schemeLinkOpen.href = scheme;
+            // 执行click
+            schemeLinkOpen.dispatchEvent(customClickEvent());
+        }
+        var iframeObj = document.createElement("iframe");
+        
+        if (iframeObj != null) {
+            iframeObj.setAttribute("style", "height:0px;width:0px;display:none;")
+            iframeObj.setAttribute("src", scheme);
+            document.body.appendChild(iframeObj);
+            document.body.removeChild(iframeObj);
+        }
+        
+    }
+       function customClickEvent() {
+        var clickEvent;
+        if (window.CustomEvent) {
+            clickEvent = new window.CustomEvent("click", {
+                canBubble: true,
+                cancelable: true
+            }
+            );
+        } else {
+            clickEvent = document.createEvent('Event');
+            clickEvent.initEvent('click', true, true);
+        }
+        return clickEvent;
+    }
+
+callAPP(); 
+//window.location.href = 'https://gorder.m.gome.com.cn/detail?storeCode=A00T&areaCode=11010000&typeCode=0&mid=30975&stid=A00T&kid=&groupId=&activityId=6740&productId=9140028922&skuId=1130030597&from=singlemessage&isappinstalled=0';
+</script>
+</body>
+</html>

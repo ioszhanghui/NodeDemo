@@ -1,0 +1,35 @@
+<html>
+<head>
+</head>
+<body>
+	<h3>单张图上传</h3>
+<form action="/singlePicture/Upload" method="post" enctype="multipart/form-data">
+    <h2>单图上传</h2>
+    <input type="file" name="logo" multiple>
+    <input type="submit" value="提交">
+</form>
+
+<h3>多张图片上传</h3>
+<form action="/uploadFile/double" method="post" enctype="multipart/form-data">
+    <input type="file" name="logo" multiple>
+    <input type="submit" value="提交">
+</form>
+
+
+<h3>多张图的上传上传 同时传力多个控件上传</h3>
+<form action="/uploadFile/FieldsImg" method="post" enctype="multipart/form-data">
+    <input type="file" name="logo" value='' multiple>
+    <input type="file" name="text" value='' multiple>
+    <input type="submit" value="提交">
+</form>
+
+
+<h3>文件上传 any接收方式</h3>
+<form action="/upLoad/Any" method="post" enctype="multipart/form-data">
+    <input type="file" name="logo" value='' multiple>
+    <input type="file" name="text" value='' multiple>
+    <input type="submit" value="提交">
+</form>
+
+<body>
+</html>
